@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:udemy_clone/core/constants/app_strings.dart';
 import 'package:udemy_clone/core/theme/app_theme.dart';
-import 'package:udemy_clone/feature/splash/presentation/view/splash_view.dart';
+import 'package:udemy_clone/routes/app_pages.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,11 +18,11 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
+        return MaterialApp.router(
           title: appName,
           debugShowCheckedModeBanner: false,
           theme: AppTheme.darkTheme,
-          home: const SplashView(),
+          routerConfig: AppPages.router,
         );
       },
     );
