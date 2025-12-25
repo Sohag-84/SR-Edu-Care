@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:udemy_clone/core/constants/app_strings.dart';
-import 'package:udemy_clone/core/theme/app_theme.dart';
-import 'package:udemy_clone/routes/app_pages.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sr_edu_care/core/constants/export.dart';
+import 'package:sr_edu_care/core/theme/app_theme.dart';
+import 'package:sr_edu_care/feature/bottom_navigation/presentation/cubit/bottom_nav_cubit.dart';
+import 'package:sr_edu_care/routes/app_pages.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,11 +18,14 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp.router(
-          title: appName,
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.darkTheme,
-          routerConfig: AppPages.router,
+        return MultiBlocProvider(
+          providers: [BlocProvider(create: (context) => BottomNavCubit())],
+          child: MaterialApp.router(
+            title: appName,
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.darkTheme,
+            routerConfig: AppPages.router,
+          ),
         );
       },
     );

@@ -1,7 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:udemy_clone/feature/bottom_nav/presentation/view/bottom_nav_view.dart';
-import 'package:udemy_clone/feature/splash/presentation/view/splash_view.dart';
-import 'package:udemy_clone/routes/app_routes.dart';
+import 'package:sr_edu_care/feature/bottom_navigation/presentation/view/bottom_navigation_view.dart';
+import 'package:sr_edu_care/feature/home/presentation/view/home_view.dart';
+import 'package:sr_edu_care/feature/my_course/presentation/view/my_course_view.dart';
+import 'package:sr_edu_care/feature/profile/presentation/view/profile_view.dart';
+import 'package:sr_edu_care/feature/splash/presentation/view/splash_view.dart';
+import 'package:sr_edu_care/feature/wishlist/presentation/view/wishilist_view.dart';
+import 'package:sr_edu_care/routes/app_routes.dart';
 
 class AppPages {
   static final router = GoRouter(
@@ -14,11 +19,41 @@ class AppPages {
         builder: (context, state) => const SplashView(),
       ),
 
-      //bottom nav
-      GoRoute(
-        path: AppRoutes.bottomNav.path,
-        name: AppRoutes.bottomNav.name,
-        builder: (context, state) => const BottomNavView(),
+      //bottom navigation bar
+      ShellRoute(
+        navigatorKey: GlobalKey<NavigatorState>(),
+        builder: (context, state, child) {
+          return BottomNavigationView(child: child);
+        },
+        routes: [
+          //home
+          GoRoute(
+            path: AppRoutes.home.path,
+            name: AppRoutes.home.name,
+            builder: (context, state) => const HomeView(),
+          ),
+
+          //my course
+          GoRoute(
+            path: AppRoutes.myCourse.path,
+            name: AppRoutes.myCourse.name,
+            builder: (context, state) => const MyCourseView(),
+          ),
+
+          //wishlist
+          GoRoute(
+            path: AppRoutes.wishlist.path,
+            name: AppRoutes.wishlist.name,
+            builder: (context, state) => const WishilistView(),
+          ),
+
+          //profile
+          GoRoute(
+            path: AppRoutes.profile.path,
+            name: AppRoutes.profile.name,
+            builder: (context, state) => const ProfileView(),
+          ),
+        ],
       ),
     ],
   );

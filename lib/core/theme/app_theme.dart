@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:udemy_clone/core/theme/app_colors.dart';
+import 'package:sr_edu_care/core/theme/app_colors.dart';
 
 class AppTheme {
   const AppTheme._();

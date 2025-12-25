@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
-import 'package:udemy_clone/core/constants/app_assets.dart';
-import 'package:udemy_clone/routes/app_routes.dart';
+import 'package:sr_edu_care/core/constants/app_assets.dart';
+import 'package:sr_edu_care/routes/app_routes.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -17,8 +17,8 @@ class _SplashViewState extends State<SplashView> {
     super.initState();
 
     Future.delayed(const Duration(seconds: 3), () {
-      // ignore: use_build_context_synchronously
-      context.pushReplacementNamed(AppRoutes.bottomNav.name);
+
+      context.pushReplacement(AppRoutes.home.path);
     });
   }
 
