@@ -16,8 +16,8 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(seconds: 3), () {
-
+    Future.delayed(const Duration(seconds: 2), () {
+      // ignore: use_build_context_synchronously
       context.pushReplacement(AppRoutes.home.path);
     });
   }

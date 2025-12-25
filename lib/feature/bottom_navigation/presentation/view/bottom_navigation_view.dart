@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
@@ -32,7 +31,6 @@ class BottomNavigationView extends StatelessWidget {
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             currentIndex: _getIndex(state.currentItem),
-            backgroundColor: primaryColor,
             selectedItemColor: orangeColor,
             selectedLabelStyle: TextStyle(
               fontSize: 12.sp,
