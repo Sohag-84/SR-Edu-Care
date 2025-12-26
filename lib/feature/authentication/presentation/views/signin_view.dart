@@ -30,7 +30,6 @@ class _SigninViewState extends State<SigninView> {
         padding: EdgeInsets.all(12.w),
         child: Column(
           mainAxisAlignment: .center,
-          // crossAxisAlignment: .center,
           children: [
             Gap(kTextTabBarHeight + 20),
             Image.asset(whiteLogo),
