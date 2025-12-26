@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sr_edu_care/feature/authentication/presentation/views/signin_view.dart';
+import 'package:sr_edu_care/feature/authentication/presentation/views/signup_view.dart';
 import 'package:sr_edu_care/feature/bottom_navigation/presentation/view/bottom_navigation_view.dart';
 import 'package:sr_edu_care/feature/home/presentation/view/home_view.dart';
 import 'package:sr_edu_care/feature/my_course/presentation/view/my_course_view.dart';
@@ -17,6 +19,20 @@ class AppPages {
         path: AppRoutes.splash.path,
         name: AppRoutes.splash.name,
         builder: (context, state) => const SplashView(),
+      ),
+
+      // login Route
+      GoRoute(
+        path: AppRoutes.login.path,
+        name: AppRoutes.login.name,
+        builder: (context, state) => const SigninView(),
+      ),
+      
+      // signup Route
+      GoRoute(
+        path: AppRoutes.register.path,
+        name: AppRoutes.register.name,
+        builder: (context, state) => const SignupView(),
       ),
 
       //bottom navigation bar
