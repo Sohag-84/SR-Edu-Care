@@ -1,10 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
+import 'package:sr_edu_care/services/local_preference_service.dart';
 import 'package:sr_edu_care/core/theme/app_theme.dart';
 import 'package:sr_edu_care/feature/bottom_navigation/presentation/cubit/bottom_nav_cubit.dart';
 import 'package:sr_edu_care/routes/app_pages.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  LocalPreferenceService.instance.init();
+
   runApp(const MyApp());
 }
 

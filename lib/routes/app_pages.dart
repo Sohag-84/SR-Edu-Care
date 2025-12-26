@@ -27,7 +27,7 @@ class AppPages {
         name: AppRoutes.login.name,
         builder: (context, state) => const SigninView(),
       ),
-      
+
       // signup Route
       GoRoute(
         path: AppRoutes.register.path,
