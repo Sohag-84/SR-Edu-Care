@@ -1,10 +1,12 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ApiEndpoints {
   // Base
-  static const String baseUrl = '';
+  static final String baseUrl = dotenv.env['BASE_URL']!;
 
   // Auth (NO TOKEN)
-  static const String login = '';
-  static const String register = '';
+  static const String login = 'user/login';
+  static const String register = 'user/register';
 
   // Protected APIs
 
