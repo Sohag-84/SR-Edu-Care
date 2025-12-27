@@ -1,5 +1,6 @@
 import 'package:sr_edu_care/core/constants/export.dart';
 import 'package:sr_edu_care/core/widgets/custom_course_card.dart';
+import 'package:sr_edu_care/services/local_preference_service.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -13,7 +14,15 @@ class HomeView extends StatelessWidget {
           crossAxisAlignment: .start,
           children: [
             Text("Hi Alex", style: TextStyle(fontSize: 13.sp)),
-            Text("Find your lesson", style: TextStyle(fontSize: 12.sp)),
+            GestureDetector(
+              onTap: () {
+                LocalPreferenceService.instance.removeToken();
+              },
+              child: Text(
+                "Find your lesson",
+                style: TextStyle(fontSize: 12.sp),
+              ),
+            ),
           ],
         ),
         actions: [Icon(Icons.notifications_outlined)],
