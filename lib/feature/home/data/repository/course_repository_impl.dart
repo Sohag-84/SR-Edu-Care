@@ -1,0 +1,27 @@
+import 'package:fpdart/fpdart.dart';
+import 'package:sr_edu_care/core/error_handler/api_error_handler.dart';
+import 'package:sr_edu_care/core/utils/typedef.dart';
+import 'package:sr_edu_care/feature/home/data/datasources/course_remote_datasource.dart';
+import 'package:sr_edu_care/feature/home/domain/entities/course_wrapper_entity.dart';
+import 'package:sr_edu_care/feature/home/domain/repository/course_repository.dart';
+
+class CourseRepositoryImpl implements CourseRepository {
+  final CourseRemoteDatasource courseRemoteDatasource;
+  const CourseRepositoryImpl({required this.courseRemoteDatasource});
+
+  @override
+  ResultFuture<CourseWrapperEntity> fetchCourses({
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      final courses = await courseRemoteDatasource.fetchCourses(
+        page: page,
+        limit: limit,
+      );
+      return right(courses);
+    } catch (e) {
+      return left(ApiErrorHandler.handle(e));
+    }
+  }
+}

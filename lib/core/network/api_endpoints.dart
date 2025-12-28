@@ -7,9 +7,10 @@ class ApiEndpoints {
   // Auth (NO TOKEN)
   static const String login = 'user/login';
   static const String register = 'user/register';
+  static const String getPublishedCourses = 'course/publish-course/get';
 
   // Protected APIs
 
   /// APIs that DON'T need token
-  static const List<String> publicApis = [login, register];
+  static const List<String> publicApis = [login, register, getPublishedCourses];
 }

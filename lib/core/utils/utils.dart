@@ -1,5 +1,4 @@
 import 'package:any_image_view/any_image_view.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sr_edu_care/core/constants/app_assets.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
 

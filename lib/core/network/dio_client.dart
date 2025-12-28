@@ -20,7 +20,7 @@ class DioClient {
   /// AUTH INTERCEPTOR
   static final InterceptorsWrapper _authInterceptor = InterceptorsWrapper(
     onRequest: (options, handler) {
-      final bool isPublicApi = ApiEndpoints.baseUrl.contains(options.path);
+      final bool isPublicApi = ApiEndpoints.publicApis.contains(options.path);
 
       if (!isPublicApi) {
         final token = LocalPreferenceService.instance.getToken();
