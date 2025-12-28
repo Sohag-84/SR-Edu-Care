@@ -13,7 +13,10 @@ class HomeView extends StatelessWidget {
         title: Column(
           crossAxisAlignment: .start,
           children: [
-            Text("Hi Alex", style: TextStyle(fontSize: 13.sp)),
+            Text(
+              "Hi ${LocalPreferenceService.instance.getUsername()}",
+              style: TextStyle(fontSize: 13.sp),
+            ),
             GestureDetector(
               onTap: () {
                 LocalPreferenceService.instance.removeToken();
