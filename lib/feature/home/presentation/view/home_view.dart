@@ -71,7 +71,7 @@ class _HomeViewState extends State<HomeView> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 8.h,
                       crossAxisSpacing: 8.w,
-                      mainAxisExtent: 165.h,
+                      mainAxisExtent: 205.h,
                     ),
                     itemCount: state.courseWapper.courses.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -84,6 +84,8 @@ class _HomeViewState extends State<HomeView> {
                         title: course.courseTitle,
                         lessonCount: "(${course.sections.length} Lessons)",
                         courseDuration: "6h 55min",
+                        level: course.courseLevel,
+                        categroy: course.category,
                       );
                     },
                   ),
