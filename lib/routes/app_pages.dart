@@ -4,6 +4,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:sr_edu_care/feature/authentication/presentation/views/signin_view.dart';
 import 'package:sr_edu_care/feature/authentication/presentation/views/signup_view.dart';
 import 'package:sr_edu_care/feature/bottom_navigation/presentation/view/bottom_navigation_view.dart';
+import 'package:sr_edu_care/feature/course/presentation/views/course_view.dart';
 import 'package:sr_edu_care/feature/home/presentation/view/home_view.dart';
 import 'package:sr_edu_care/feature/my_course/presentation/view/my_course_view.dart';
 import 'package:sr_edu_care/feature/profile/presentation/view/profile_view.dart';
@@ -16,22 +17,24 @@ class AppPages {
   static final router = GoRouter(
     initialLocation: AppRoutes.splash.path,
     redirect: (context, state) {
-      final String token = LocalPreferenceService.instance.getToken();
+      final token = LocalPreferenceService.instance.getToken();
+      final isLoggedIn = token.isNotEmpty && !JwtDecoder.isExpired(token);
 
-      // Allow splash screen to be accessed without redirection
-      if (state.matchedLocation == AppRoutes.splash.path) {
-        return null;
-      }
+      final isAuthRoute =
+          state.matchedLocation == AppRoutes.login.path ||
+          state.matchedLocation == AppRoutes.register.path ||
+          state.matchedLocation == AppRoutes.splash.path;
 
-      if (token.isEmpty) return AppRoutes.login.path;
-
-      if (JwtDecoder.isExpired(token)) {
-        LocalPreferenceService.instance.removeToken();
+      // User not logged in → block protected routes
+      if (!isLoggedIn && !isAuthRoute) {
         return AppRoutes.login.path;
       }
-      if (token.isNotEmpty) {
+
+      // User logged in → prevent going back to login/register
+      if (isLoggedIn && isAuthRoute) {
         return AppRoutes.home.path;
       }
+
       return null;
     },
     routes: [
@@ -89,6 +92,15 @@ class AppPages {
             path: AppRoutes.profile.path,
             name: AppRoutes.profile.name,
             builder: (context, state) => const ProfileView(),
+          ),
+
+          //course
+          GoRoute(
+            path: AppRoutes.course.path,
+            name: AppRoutes.course.name,
+            builder: (context, state) => CourseView(
+              courseId: (state.extra as Map)["courseId"].toString(),
+            ),
           ),
         ],
       ),

@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sr_edu_care/core/cloudinary/video_upload.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
 import 'package:sr_edu_care/core/widgets/custom_course_card.dart';
 import 'package:sr_edu_care/feature/home/presentation/bloc/course_bloc.dart';
+import 'package:sr_edu_care/routes/app_routes.dart';
 import 'package:sr_edu_care/services/local_preference_service.dart';
 
 class HomeView extends StatefulWidget {
@@ -24,12 +26,18 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return VideoUploadPage();
-              }));
-            },
-          child: Icon(Icons.person_2)),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return VideoUploadPage();
+                },
+              ),
+            );
+          },
+          child: Icon(Icons.person_2),
+        ),
         title: Column(
           crossAxisAlignment: .start,
           children: [
@@ -84,7 +92,12 @@ class _HomeViewState extends State<HomeView> {
                     itemBuilder: (BuildContext context, int index) {
                       final course = state.courseWapper.courses[index];
                       return CustomCourseCard(
-                        onTap: () {},
+                        onTap: () {
+                          context.pushNamed(
+                            AppRoutes.course.name,
+                            extra: {"courseId": course.id.toString()},
+                          );
+                        },
                         thumbnailImage: course.courseThumbnail == ""
                             ? "https://cdn.ostad.app/course/photo/2025-12-08T14-25-01.527Z-Course-Thumbnail-12.jpg"
                             : course.courseThumbnail.toString(),

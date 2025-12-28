@@ -7,6 +7,7 @@ class AppRoutes {
   static Route wishlist = Route(name: "Wishlist", path: "/wishlist");
   static Route myCourse = Route(name: "My Course", path: "/my-course");
   static Route profile = Route(name: "Profile", path: "/profile");
+  static Route course = Route(name: "Course", path: "/course");
 }
 
 class Route {
