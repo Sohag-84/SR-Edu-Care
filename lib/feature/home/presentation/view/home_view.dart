@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sr_edu_care/core/cloudinary/video_upload.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
 import 'package:sr_edu_care/core/widgets/custom_course_card.dart';
 import 'package:sr_edu_care/feature/home/presentation/bloc/course_bloc.dart';
@@ -22,7 +23,13 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.person_2),
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return VideoUploadPage();
+              }));
+            },
+          child: Icon(Icons.person_2)),
         title: Column(
           crossAxisAlignment: .start,
           children: [
