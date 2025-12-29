@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sr_edu_care/core/cloudinary/video_upload.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
 import 'package:sr_edu_care/core/widgets/custom_course_card.dart';
-import 'package:sr_edu_care/feature/home/presentation/bloc/course_bloc.dart';
+import 'package:sr_edu_care/feature/course/presentation/bloc/course/course_bloc.dart';
 import 'package:sr_edu_care/routes/app_routes.dart';
 import 'package:sr_edu_care/services/local_preference_service.dart';
 

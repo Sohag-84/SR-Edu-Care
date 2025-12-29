@@ -1,5 +1,5 @@
-import 'package:sr_edu_care/feature/home/data/model/course_model.dart';
-import 'package:sr_edu_care/feature/home/domain/entities/course_wrapper_entity.dart';
+import 'package:sr_edu_care/feature/course/data/models/course_model.dart';
+import 'package:sr_edu_care/feature/course/domain/entities/course_wrapper_entity.dart';
 
 class CourseWrapperModel extends CourseWrapperEntity {
   CourseWrapperModel({

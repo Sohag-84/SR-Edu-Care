@@ -1,4 +1,4 @@
-import 'package:sr_edu_care/feature/home/domain/entities/course_entity.dart';
+import 'package:sr_edu_care/feature/course/domain/entities/course_entity.dart';
 
 class CourseModel extends CourseEntity {
   const CourseModel({

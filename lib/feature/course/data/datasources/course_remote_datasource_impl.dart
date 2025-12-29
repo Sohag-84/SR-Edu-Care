@@ -1,7 +1,7 @@
 import 'package:sr_edu_care/core/network/api_endpoints.dart';
 import 'package:sr_edu_care/core/network/api_services.dart';
-import 'package:sr_edu_care/feature/home/data/datasources/course_remote_datasource.dart';
-import 'package:sr_edu_care/feature/home/data/model/course_wrapper_model.dart';
+import 'package:sr_edu_care/feature/course/data/datasources/course_remote_datasource.dart';
+import 'package:sr_edu_care/feature/course/data/models/course_wrapper_model.dart';
 
 class CourseRemoteDatasourceImpl implements CourseRemoteDatasource {
   final ApiService apiService;

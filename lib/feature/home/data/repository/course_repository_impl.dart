@@ -1,9 +1,9 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:sr_edu_care/core/error_handler/api_error_handler.dart';
 import 'package:sr_edu_care/core/utils/typedef.dart';
-import 'package:sr_edu_care/feature/home/data/datasources/course_remote_datasource.dart';
-import 'package:sr_edu_care/feature/home/domain/entities/course_wrapper_entity.dart';
-import 'package:sr_edu_care/feature/home/domain/repository/course_repository.dart';
+import 'package:sr_edu_care/feature/course/data/datasources/course_remote_datasource.dart';
+import 'package:sr_edu_care/feature/course/domain/entities/course_wrapper_entity.dart';
+import 'package:sr_edu_care/feature/course/domain/repository/course_repository.dart';
 
 class CourseRepositoryImpl implements CourseRepository {
   final CourseRemoteDatasource courseRemoteDatasource;

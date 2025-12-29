@@ -4,8 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sr_edu_care/core/error_handler/failure_message_wrapper.dart';
-import 'package:sr_edu_care/feature/home/domain/entities/course_wrapper_entity.dart';
-import 'package:sr_edu_care/feature/home/domain/usecases/get_course_usecase.dart';
+import 'package:sr_edu_care/feature/course/domain/entities/course_wrapper_entity.dart';
+import 'package:sr_edu_care/feature/course/domain/usecases/get_course_usecase.dart';
 
 part 'course_event.dart';
 part 'course_state.dart';
