@@ -2,6 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:sr_edu_care/core/error_handler/api_error_handler.dart';
 import 'package:sr_edu_care/core/utils/typedef.dart';
 import 'package:sr_edu_care/feature/course/data/datasources/course_remote_datasource.dart';
+import 'package:sr_edu_care/feature/course/domain/entities/course_section_entity.dart';
 import 'package:sr_edu_care/feature/course/domain/entities/course_wrapper_entity.dart';
 import 'package:sr_edu_care/feature/course/domain/repository/course_repository.dart';
 
@@ -20,6 +21,20 @@ class CourseRepositoryImpl implements CourseRepository {
         limit: limit,
       );
       return right(courses);
+    } catch (e) {
+      return left(ApiErrorHandler.handle(e));
+    }
+  }
+
+  @override
+  ResultFuture<CourseSectionEntity> fetchCourseSections({
+    required String courseId,
+  }) async {
+    try {
+      final sections = await courseRemoteDatasource.fetchCourseSections(
+        courseId: courseId,
+      );
+      return right(sections);
     } catch (e) {
       return left(ApiErrorHandler.handle(e));
     }

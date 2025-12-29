@@ -1,8 +1,31 @@
 class CourseSectionEntity {
   final String id;
+  final String courseTitle;
+  final String description;
+  final CreatorEntity creator;
   final List<SectionEntity> sections;
 
-  CourseSectionEntity({required this.id, required this.sections});
+  const CourseSectionEntity({
+    required this.id,
+    required this.courseTitle,
+    required this.description,
+    required this.creator,
+    required this.sections,
+  });
+}
+
+class CreatorEntity {
+  final String id;
+  final String name;
+  final String email;
+  final String photoUrl;
+
+  const CreatorEntity({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.photoUrl,
+  });
 }
 
 class SectionEntity {
@@ -12,7 +35,7 @@ class SectionEntity {
   final List<LectureEntity> lectures;
   final int order;
 
-  SectionEntity({
+  const SectionEntity({
     required this.id,
     required this.title,
     required this.courseId,
@@ -28,7 +51,7 @@ class LectureEntity {
   final bool isPreview;
   final int videoOrder;
 
-  LectureEntity({
+  const LectureEntity({
     required this.id,
     required this.title,
     required this.videoUrl,

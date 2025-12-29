@@ -1,14 +1,41 @@
 import 'package:sr_edu_care/feature/course/domain/entities/course_section_entity.dart';
 
 class CourseSectionModel extends CourseSectionEntity {
-  CourseSectionModel({required super.id, required super.sections});
+  const CourseSectionModel({
+    required super.id,
+    required super.courseTitle,
+    required super.description,
+    required super.creator,
+    required super.sections,
+  });
 
   factory CourseSectionModel.fromJson(Map<String, dynamic> json) {
     return CourseSectionModel(
       id: json['_id'],
+      courseTitle: json['courseTitle'],
+      description: json['description'],
+      creator: CreatorModel.fromJson(json['creator']),
       sections: (json['sections'] as List)
           .map((e) => SectionModel.fromJson(e))
           .toList(),
+    );
+  }
+}
+
+class CreatorModel extends CreatorEntity {
+  const CreatorModel({
+    required super.id,
+    required super.name,
+    required super.email,
+    required super.photoUrl,
+  });
+
+  factory CreatorModel.fromJson(Map<String, dynamic> json) {
+    return CreatorModel(
+      id: json['_id'],
+      name: json['name'],
+      email: json['email'],
+      photoUrl: json['photoUrl'] ?? '',
     );
   }
 }

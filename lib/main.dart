@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
 import 'package:sr_edu_care/feature/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:sr_edu_care/feature/course/presentation/bloc/course/course_bloc.dart';
+import 'package:sr_edu_care/feature/course/presentation/bloc/course_section/course_section_bloc.dart';
 import 'package:sr_edu_care/service_locator.dart';
 import 'package:sr_edu_care/services/local_preference_service.dart';
 import 'package:sr_edu_care/core/theme/app_theme.dart';
@@ -41,6 +42,10 @@ class MyApp extends StatelessWidget {
             ),
             BlocProvider(
               create: (context) => CourseBloc(getCourseUsecase: sl.call()),
+            ),
+            BlocProvider(
+              create: (context) =>
+                  CourseSectionBloc(getCourseSectionUsecase: sl.call()),
             ),
           ],
           child: MaterialApp.router(
