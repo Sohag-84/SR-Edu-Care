@@ -14,9 +14,25 @@ class CourseView extends StatefulWidget {
 }
 
 class _CourseViewState extends State<CourseView> {
-  late VideoPlayerController _controller;
+  VideoPlayerController? _controller;
+  ChewieController? chewieController;
 
-  late ChewieController chewieController;
+  Future<void> playVideo(String videoUrl) async {
+    await _controller?.dispose();
+    chewieController?.dispose();
+
+    _controller = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
+    await _controller!.initialize();
+
+    chewieController = ChewieController(
+      videoPlayerController: _controller!,
+      autoPlay: true,
+      looping: false,
+      allowedScreenSleep: false,
+    );
+
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -24,29 +40,12 @@ class _CourseViewState extends State<CourseView> {
     context.read<CourseSectionBloc>().add(
       FetchedCourseSections(courseId: widget.courseId),
     );
-    _controller =
-        VideoPlayerController.networkUrl(
-            Uri.parse(
-              'https://res.cloudinary.com/dm1xze4ej/video/upload/v1766935670/d4wdgcenjr8hzzadmrux.mp4',
-            ),
-          )
-          ..initialize().then((_) {
-            setState(() {});
-            _controller.play();
-          });
-
-    chewieController = ChewieController(
-      videoPlayerController: _controller,
-      autoPlay: false,
-      looping: true,
-      allowedScreenSleep: false,
-    );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
-    chewieController.dispose();
+    _controller?.dispose();
+    chewieController?.dispose();
     super.dispose();
   }
 
@@ -67,10 +66,14 @@ class _CourseViewState extends State<CourseView> {
                 SizedBox(
                   height: 190.h,
                   width: double.infinity,
-                  child: _controller.value.isInitialized
-                      ? Chewie(controller: chewieController)
-                      : Center(child: const CircularProgressIndicator()),
+                  child:
+                      chewieController != null &&
+                          _controller != null &&
+                          _controller!.value.isInitialized
+                      ? Chewie(controller: chewieController!)
+                      : Center(child: Text("Select a lecture to play")),
                 ),
+
                 //others details
                 Expanded(
                   child: Padding(
@@ -185,8 +188,30 @@ class _CourseViewState extends State<CourseView> {
                                                     .lectures[lectureIndex];
 
                                                 return ListTile(
+                                                  onTap: () {
+                                                    if (lecture.isPreview) {
+                                                      playVideo(
+                                                        lecture.videoUrl,
+                                                      );
+                                                    } else {
+                                                      ScaffoldMessenger.of(
+                                                        context,
+                                                      ).showSnackBar(
+                                                        SnackBar(
+                                                          content: Text(
+                                                            'This lecture is locked. Please enroll to access all content.',
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
                                                   leading: Icon(
-                                                    Icons.play_circle_outline,
+                                                    lecture.isPreview
+                                                        ? Icons
+                                                              .play_circle_outline
+                                                        : Icons.lock_outline,
+
+                                                    size: 20.sp,
                                                   ),
                                                   title: Text(
                                                     lecture.title,
