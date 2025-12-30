@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sr_edu_care/core/cloudinary/video_upload.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
+import 'package:sr_edu_care/core/utils/refresh_indicator.dart';
 import 'package:sr_edu_care/core/widgets/custom_course_card.dart';
 import 'package:sr_edu_care/feature/course/presentation/bloc/course/course_bloc.dart';
 import 'package:sr_edu_care/routes/app_routes.dart';
@@ -58,63 +59,75 @@ class _HomeViewState extends State<HomeView> {
         ),
         actions: [Icon(Icons.notifications_outlined)],
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(12.w),
-        child: BlocBuilder<CourseBloc, CourseState>(
-          builder: (context, state) {
-            if (state is CourseLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is CourseError) {
-              return Center(child: Text(state.message));
-            } else if (state is CourseLoaded) {
-              return Column(
-                crossAxisAlignment: .start,
-                children: [
-                  Gap(10.h),
-                  Text(
-                    featureCourses,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
+      body: refresh(
+        onRefresh: () async {
+          context.read<CourseBloc>().add(FetchCourses(page: 1, limit: 10));
+        },
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.all(12.w),
+          child: BlocBuilder<CourseBloc, CourseState>(
+            builder: (context, state) {
+              if (state is CourseLoading) {
+                return Center(child: CircularProgressIndicator());
+              } else if (state is CourseError) {
+                return SizedBox(
+                  height:
+                      MediaQuery.of(context).size.height -
+                      kTextTabBarHeight -
+                      100.h,
+                  child: Center(child: Text(state.message)),
+                );
+              } else if (state is CourseLoaded) {
+                return Column(
+                  crossAxisAlignment: .start,
+                  children: [
+                    Gap(10.h),
+                    Text(
+                      featureCourses,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  Gap(10.h),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 8.h,
-                      crossAxisSpacing: 8.w,
-                      mainAxisExtent: 205.h,
+                    Gap(10.h),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 8.h,
+                        crossAxisSpacing: 8.w,
+                        mainAxisExtent: 205.h,
+                      ),
+                      itemCount: state.courseWapper.courses.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final course = state.courseWapper.courses[index];
+                        return CustomCourseCard(
+                          onTap: () {
+                            context.pushNamed(
+                              AppRoutes.course.name,
+                              extra: {"courseId": course.id.toString()},
+                            );
+                          },
+                          thumbnailImage: course.courseThumbnail == ""
+                              ? "https://cdn.ostad.app/course/photo/2025-12-08T14-25-01.527Z-Course-Thumbnail-12.jpg"
+                              : course.courseThumbnail.toString(),
+                          title: course.courseTitle,
+                          lessonCount: "(${course.sections.length} Lessons)",
+                          courseDuration: "6h 55min",
+                          level: course.courseLevel,
+                          categroy: course.category,
+                        );
+                      },
                     ),
-                    itemCount: state.courseWapper.courses.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final course = state.courseWapper.courses[index];
-                      return CustomCourseCard(
-                        onTap: () {
-                          context.pushNamed(
-                            AppRoutes.course.name,
-                            extra: {"courseId": course.id.toString()},
-                          );
-                        },
-                        thumbnailImage: course.courseThumbnail == ""
-                            ? "https://cdn.ostad.app/course/photo/2025-12-08T14-25-01.527Z-Course-Thumbnail-12.jpg"
-                            : course.courseThumbnail.toString(),
-                        title: course.courseTitle,
-                        lessonCount: "(${course.sections.length} Lessons)",
-                        courseDuration: "6h 55min",
-                        level: course.courseLevel,
-                        categroy: course.category,
-                      );
-                    },
-                  ),
-                ],
-              );
-            } else {
-              return SizedBox();
-            }
-          },
+                  ],
+                );
+              } else {
+                return SizedBox();
+              }
+            },
+          ),
         ),
       ),
     );
