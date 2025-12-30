@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:sr_edu_care/core/cloudinary/video_upload.dart';
 import 'package:sr_edu_care/feature/authentication/presentation/views/signin_view.dart';
 import 'package:sr_edu_care/feature/authentication/presentation/views/signup_view.dart';
 import 'package:sr_edu_care/feature/bottom_navigation/presentation/view/bottom_navigation_view.dart';
@@ -103,6 +104,13 @@ class AppPages {
             ),
           ),
         ],
+      ),
+
+      // video upload
+      GoRoute(
+        path: AppRoutes.videoUpload.path,
+        name: AppRoutes.videoUpload.name,
+        builder: (context, state) => const VideoUploadPage(),
       ),
     ],
   );

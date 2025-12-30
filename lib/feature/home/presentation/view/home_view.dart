@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sr_edu_care/core/cloudinary/video_upload.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
 import 'package:sr_edu_care/core/utils/refresh_indicator.dart';
 import 'package:sr_edu_care/core/widgets/custom_course_card.dart';
@@ -26,19 +25,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return VideoUploadPage();
-                },
-              ),
-            );
-          },
-          child: Icon(Icons.person_2),
-        ),
+        leading: Icon(Icons.person_2),
         title: Column(
           crossAxisAlignment: .start,
           children: [
@@ -46,15 +33,7 @@ class _HomeViewState extends State<HomeView> {
               "Hi ${LocalPreferenceService.instance.getUsername()}",
               style: TextStyle(fontSize: 13.sp),
             ),
-            GestureDetector(
-              onTap: () {
-                // LocalPreferenceService.instance.removeToken();
-              },
-              child: Text(
-                "Find your lesson",
-                style: TextStyle(fontSize: 12.sp),
-              ),
-            ),
+            Text("Find your lesson", style: TextStyle(fontSize: 12.sp)),
           ],
         ),
         actions: [Icon(Icons.notifications_outlined)],

@@ -8,6 +8,7 @@ class AppRoutes {
   static Route myCourse = Route(name: "My Course", path: "/my-course");
   static Route profile = Route(name: "Profile", path: "/profile");
   static Route course = Route(name: "Course", path: "/course");
+  static Route videoUpload = Route(name: "Video Upload", path: "/video-upload");
 }
 
 class Route {

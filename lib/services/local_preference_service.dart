@@ -79,4 +79,19 @@ class LocalPreferenceService {
   Future<void> removeEmail() async {
     await _prefs.remove("email");
   }
+
+  //to set user role
+  Future<void> setUserRole({required String role}) async {
+    await _prefs.setString('role', role);
+  }
+
+  //to get user role
+  String getUserRole() {
+    return _prefs.getString("role") ?? '';
+  }
+
+  //to remove user role
+  Future<void> removeUserRole() async {
+    await _prefs.remove("role");
+  }
 }

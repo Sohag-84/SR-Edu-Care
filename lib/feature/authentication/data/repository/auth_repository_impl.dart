@@ -25,6 +25,8 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       LocalPreferenceService.instance.setToken(token: result.token);
       LocalPreferenceService.instance.setUsername(username: result.user.name);
+      LocalPreferenceService.instance.setEmail(email: result.user.email);
+      LocalPreferenceService.instance.setUserRole(role: result.user.role);
       return right(result);
     } catch (e) {
       return left(ApiErrorHandler.handle(e));
