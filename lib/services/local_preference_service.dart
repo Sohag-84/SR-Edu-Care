@@ -36,13 +36,13 @@ class LocalPreferenceService {
   }
 
   ///for get user id
-  int getUserId() {
-    return _prefs.getInt("userId") ?? 0;
+  String getUserId() {
+    return _prefs.getString("userId") ?? "";
   }
 
   ///for set user id
-  Future<void> setUserId({required int userId}) async {
-    await _prefs.setInt('userId', userId);
+  Future<void> setUserId({required String userId}) async {
+    await _prefs.setString('userId', userId);
   }
 
   ///for remove user id

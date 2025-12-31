@@ -4,8 +4,10 @@ import 'package:sr_edu_care/feature/course/data/repository/course_repository_imp
 import 'package:sr_edu_care/feature/course/domain/repository/course_repository.dart';
 import 'package:sr_edu_care/feature/course/domain/usecases/get_course_section_usecase.dart';
 import 'package:sr_edu_care/feature/course/domain/usecases/get_course_usecase.dart';
+import 'package:sr_edu_care/feature/course/domain/usecases/get_instructor_courses_usecase.dart';
 import 'package:sr_edu_care/feature/course/presentation/bloc/course/course_bloc.dart';
 import 'package:sr_edu_care/feature/course/presentation/bloc/course_section/course_section_bloc.dart';
+import 'package:sr_edu_care/feature/course/presentation/bloc/instructor_course/instructor_course_bloc.dart';
 import 'package:sr_edu_care/service_locator.dart';
 
 void courseDependencyInjection() {
@@ -23,11 +25,17 @@ void courseDependencyInjection() {
     ..registerFactory(
       () => GetCourseSectionUsecase(courseRepository: sl.call()),
     )
+    ..registerFactory<GetInstructorCoursesUsecase>(
+      () => GetInstructorCoursesUsecase(courseRepository: sl.call()),
+    )
     //Bloc
     ..registerLazySingleton<CourseBloc>(
       () => CourseBloc(getCourseUsecase: sl.call()),
     )
     ..registerLazySingleton(
       () => CourseSectionBloc(getCourseSectionUsecase: sl.call()),
+    )
+    ..registerLazySingleton(
+      () => InstructorCourseBloc(instructorCoursesUsecase: sl.call()),
     );
 }

@@ -3,11 +3,22 @@ import 'package:go_router/go_router.dart';
 import 'package:sr_edu_care/core/constants/app_assets.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
 import 'package:sr_edu_care/core/widgets/custom_course_card.dart';
+import 'package:sr_edu_care/feature/profile/presentation/part/instructor_course_section.dart';
 import 'package:sr_edu_care/routes/app_routes.dart';
 import 'package:sr_edu_care/services/local_preference_service.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
+
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,49 +70,61 @@ class ProfileView extends StatelessWidget {
             ),
 
             Gap(20.h),
-            //purchased courses section
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Purchased Courses',
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w600,
+
+            //instructor all courses
+            LocalPreferenceService.instance.getUserRole() == "instructor"
+                ? InstructorCourseSection()
+                :
+                  //purchased courses section
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Purchased Courses',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            'See All',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Gap(12.h),
+                      // Purchased courses list
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 8.h,
+                          crossAxisSpacing: 8.w,
+                          mainAxisExtent: 205.h,
+                        ),
+                        itemCount: 12,
+                        itemBuilder: (BuildContext context, int index) {
+                          return CustomCourseCard(
+                            onTap: () {},
+                            thumbnailImage:
+                                "https://cdn.ostad.app/course/photo/2025-12-08T14-25-01.527Z-Course-Thumbnail-12.jpg",
+                            title: 'Course Title $index',
+                            courseDuration: '3h 20m',
+                            lessonCount: "12 Lessons",
+                            level: 'Beginner',
+                            categroy: 'Programming',
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                ),
-                Text(
-                  'See All',
-                  style: TextStyle(fontSize: 14.sp, color: Colors.blue),
-                ),
-              ],
-            ),
-            Gap(12.h),
-            // Purchased courses list
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8.h,
-                crossAxisSpacing: 8.w,
-                mainAxisExtent: 205.h,
-              ),
-              itemCount: 12,
-              itemBuilder: (BuildContext context, int index) {
-                return CustomCourseCard(
-                  onTap: () {},
-                  thumbnailImage:
-                      "https://cdn.ostad.app/course/photo/2025-12-08T14-25-01.527Z-Course-Thumbnail-12.jpg",
-                  title: 'Course Title $index',
-                  courseDuration: '3h 20m',
-                  lessonCount: "12 Lessons",
-                  level: 'Beginner',
-                  categroy: 'Programming',
-                );
-              },
-            ),
           ],
         ),
       ),

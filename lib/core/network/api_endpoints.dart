@@ -10,8 +10,8 @@ class ApiEndpoints {
   static const String getPublishedCourses = 'course/publish-course/get';
 
   // Protected APIs
-  static String getCourseSections(String courseId) =>
-      'section/$courseId/get';
+  static String getCourseSections(String courseId) => 'section/$courseId/get';
+  static String getInstructorCourses = "course/instructor-courses";
 
   /// APIs that DON'T need token
   static const List<String> publicApis = [login, register, getPublishedCourses];

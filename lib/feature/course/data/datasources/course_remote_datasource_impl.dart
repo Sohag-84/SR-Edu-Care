@@ -1,6 +1,7 @@
 import 'package:sr_edu_care/core/network/api_endpoints.dart';
 import 'package:sr_edu_care/core/network/api_services.dart';
 import 'package:sr_edu_care/feature/course/data/datasources/course_remote_datasource.dart';
+import 'package:sr_edu_care/feature/course/data/models/course_model.dart';
 import 'package:sr_edu_care/feature/course/data/models/course_section_model.dart';
 import 'package:sr_edu_care/feature/course/data/models/course_wrapper_model.dart';
 
@@ -32,5 +33,14 @@ class CourseRemoteDatasourceImpl implements CourseRemoteDatasource {
     );
 
     return CourseSectionModel.fromJson(response.data['data']);
+  }
+
+  @override
+  Future<List<CourseModel>> getInstructorCourses() async {
+    final response = await apiService.get(ApiEndpoints.getInstructorCourses);
+
+    List<dynamic> courseList = response.data['data'];
+
+    return courseList.map((course) => CourseModel.fromJson(course)).toList();
   }
 }

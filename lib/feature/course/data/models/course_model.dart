@@ -30,7 +30,9 @@ class CourseModel extends CourseEntity {
       courseThumbnail: json['courseThumbnail'],
       sections: List<String>.from(json['sections'] ?? []),
       enrolledStudents: List<String>.from(json['enrolledStudents'] ?? []),
-      creator: CreatorModel.fromJson(json['creator']),
+      creator: json['creator'] is String
+          ? CreatorModel(id: "", name: '', email: '', photoUrl: '')
+          : CreatorModel.fromJson(json['creator']),
       isPublished: json['isPublished'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
