@@ -1,7 +1,8 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:sr_edu_care/core/constants/export.dart';
 
 class VideoUploadPage extends StatefulWidget {
   const VideoUploadPage({super.key});
@@ -14,7 +15,10 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
   File? selectedVideo;
   double uploadProgress = 0.0;
   String? uploadedVideoUrl;
+  String? publicId;
   bool isUploading = false;
+
+  var isToggoleSwitch = false;
 
   final Dio dio = Dio();
 
@@ -40,8 +44,8 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
       uploadProgress = 0;
     });
 
-    const cloudName = "dm1xze4ej";
-    const uploadPreset = "udemy_clone_video";
+    String cloudName = dotenv.env['CLOUDINARY_CLOUD_NAME']!;
+    String uploadPreset = dotenv.env['CLOUDINARY_UPLOAD_PRESET']!;
 
     final url = "https://api.cloudinary.com/v1_1/$cloudName/video/upload";
 
@@ -63,9 +67,11 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
           });
         },
       );
+      print("Upload Response: ${response.data}");
 
       setState(() {
         uploadedVideoUrl = response.data["secure_url"];
+        publicId = response.data["public_id"];
         isUploading = false;
       });
     } catch (e) {
@@ -103,6 +109,23 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
 
             const SizedBox(height: 20),
 
+            //switch for video preview value
+            Row(
+              children: [
+                Text("Video Preview"),
+                Gap(10.w),
+                Switch(
+                  value: isToggoleSwitch,
+                  onChanged: (value) {
+                    setState(() {
+                      isToggoleSwitch = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+
+            //upload video in cloudinary
             ElevatedButton(
               onPressed: isUploading ? null : uploadVideo,
               child: const Text("Upload Video"),
