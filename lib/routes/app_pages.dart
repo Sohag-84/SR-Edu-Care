@@ -110,7 +110,9 @@ class AppPages {
       GoRoute(
         path: AppRoutes.videoUpload.path,
         name: AppRoutes.videoUpload.name,
-        builder: (context, state) => const VideoUploadPage(),
+        builder: (context, state) => VideoUploadPage(
+          lectureId: (state.extra as Map)["lectureId"].toString(),
+        ),
       ),
     ],
   );

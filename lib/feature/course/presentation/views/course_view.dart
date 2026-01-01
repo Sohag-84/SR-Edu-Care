@@ -3,6 +3,7 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
 import 'package:sr_edu_care/feature/course/presentation/bloc/course_section/course_section_bloc.dart';
+import 'package:sr_edu_care/feature/course/presentation/part/lecture_section.dart';
 import 'package:video_player/video_player.dart';
 
 class CourseView extends StatefulWidget {
@@ -187,8 +188,10 @@ class _CourseViewState extends State<CourseView> {
                                                 final lecture = section
                                                     .lectures[lectureIndex];
 
-                                                return ListTile(
-                                                  onTap: () {
+                                                return lectureSection(
+                                                  lecture: lecture,
+                                                  context: context,
+                                                  onVideoPlayTap: () {
                                                     if (lecture.isPreview) {
                                                       playVideo(
                                                         lecture.videoUrl,
@@ -205,30 +208,6 @@ class _CourseViewState extends State<CourseView> {
                                                       );
                                                     }
                                                   },
-                                                  leading: Icon(
-                                                    lecture.isPreview
-                                                        ? Icons
-                                                              .play_circle_outline
-                                                        : Icons.lock_outline,
-
-                                                    size: 20.sp,
-                                                  ),
-                                                  title: Text(
-                                                    lecture.title,
-                                                    maxLines: 2,
-                                                    style: TextStyle(
-                                                      color: greyColor,
-                                                      fontSize: 13.sp,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                                  trailing: Text(
-                                                    "10:00",
-                                                    style: TextStyle(
-                                                      fontSize: 12.sp,
-                                                    ),
-                                                  ),
                                                 );
                                               },
                                         ),

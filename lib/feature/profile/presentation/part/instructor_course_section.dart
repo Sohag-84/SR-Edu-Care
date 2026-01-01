@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
 import 'package:sr_edu_care/core/widgets/custom_course_card.dart';
 import 'package:sr_edu_care/feature/course/presentation/bloc/instructor_course/instructor_course_bloc.dart';
+import 'package:sr_edu_care/routes/app_routes.dart';
 
 class InstructorCourseSection extends StatefulWidget {
   const InstructorCourseSection({super.key});
@@ -30,11 +32,7 @@ class _InstructorCourseSectionState extends State<InstructorCourseSection> {
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
             ),
             GestureDetector(
-              onTap: () {
-                context.read<InstructorCourseBloc>().add(
-                  InstructorCourseFetched(),
-                );
-              },
+              onTap: () {},
               child: Text(
                 'See All',
                 style: TextStyle(fontSize: 14.sp, color: Colors.blue),
@@ -70,7 +68,12 @@ class _InstructorCourseSectionState extends State<InstructorCourseSection> {
                 itemBuilder: (BuildContext context, int index) {
                   final course = state.courseList[index];
                   return CustomCourseCard(
-                    onTap: () {},
+                    onTap: () {
+                      context.pushNamed(
+                        AppRoutes.course.name,
+                        extra: {"courseId": course.id},
+                      );
+                    },
                     thumbnailImage: course.courseThumbnail.toString().isEmpty
                         ? "https://cdn.ostad.app/course/photo/2025-12-08T14-25-01.527Z-Course-Thumbnail-12.jpg"
                         : course.courseThumbnail!,

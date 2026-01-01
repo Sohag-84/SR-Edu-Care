@@ -5,7 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
 
 class VideoUploadPage extends StatefulWidget {
-  const VideoUploadPage({super.key});
+  final String lectureId;
+  const VideoUploadPage({super.key, required this.lectureId});
 
   @override
   State<VideoUploadPage> createState() => _VideoUploadPageState();
