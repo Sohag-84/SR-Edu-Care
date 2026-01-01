@@ -1,3 +1,4 @@
+import 'package:sr_edu_care/core/model/response_model.dart';
 import 'package:sr_edu_care/core/network/api_endpoints.dart';
 import 'package:sr_edu_care/core/network/api_services.dart';
 import 'package:sr_edu_care/feature/course/data/datasources/course_remote_datasource.dart';
@@ -42,5 +43,20 @@ class CourseRemoteDatasourceImpl implements CourseRemoteDatasource {
     List<dynamic> courseList = response.data['data'];
 
     return courseList.map((course) => CourseModel.fromJson(course)).toList();
+  }
+
+  @override
+  Future<ResponseModel> updateLecture({
+    required String lectureId,
+    required String videoTitle,
+    required bool isPreview,
+    required String videoUrl,
+  }) async {
+    final response = await apiService.post(
+      "${ApiEndpoints.updateLecture}/$lectureId",
+      data: {"title": videoTitle, "isPreview": isPreview, "videoUrl": videoUrl},
+    );
+
+    return ResponseModel.fromJson(response.data);
   }
 }

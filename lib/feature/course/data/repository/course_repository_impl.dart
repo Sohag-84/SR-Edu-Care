@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:sr_edu_care/core/entity/response_entity.dart';
 import 'package:sr_edu_care/core/error_handler/api_error_handler.dart';
 import 'package:sr_edu_care/core/utils/typedef.dart';
 import 'package:sr_edu_care/feature/course/data/datasources/course_remote_datasource.dart';
@@ -45,6 +46,26 @@ class CourseRepositoryImpl implements CourseRepository {
   ResultFuture<List<CourseEntity>> getInstructorCourses() async {
     try {
       final result = await courseRemoteDatasource.getInstructorCourses();
+      return right(result);
+    } catch (e) {
+      return left(ApiErrorHandler.handle(e));
+    }
+  }
+
+  @override
+  ResultFuture<ResponseEntity> updateLecture({
+    required String lectureId,
+    required String videoTitle,
+    required bool isPreview,
+    required String videoUrl,
+  }) async {
+    try {
+      final result = await courseRemoteDatasource.updateLecture(
+        lectureId: lectureId,
+        videoTitle: videoTitle,
+        isPreview: isPreview,
+        videoUrl: videoUrl,
+      );
       return right(result);
     } catch (e) {
       return left(ApiErrorHandler.handle(e));

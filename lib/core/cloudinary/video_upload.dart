@@ -1,12 +1,26 @@
 import 'dart:io';
+
+import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:dio/dio.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
+import 'package:sr_edu_care/core/utils/utils.dart';
+import 'package:sr_edu_care/feature/course/presentation/bloc/update_lecture/update_lecture_bloc.dart';
 
 class VideoUploadPage extends StatefulWidget {
   final String lectureId;
-  const VideoUploadPage({super.key, required this.lectureId});
+  final String videoTitle;
+  final bool isPreview;
+  final String videoUrl;
+
+  const VideoUploadPage({
+    super.key,
+    required this.lectureId,
+    required this.videoTitle,
+    required this.isPreview,
+    required this.videoUrl,
+  });
 
   @override
   State<VideoUploadPage> createState() => _VideoUploadPageState();
@@ -15,13 +29,22 @@ class VideoUploadPage extends StatefulWidget {
 class _VideoUploadPageState extends State<VideoUploadPage> {
   File? selectedVideo;
   double uploadProgress = 0.0;
-  String? uploadedVideoUrl;
+  late String uploadedVideoUrl;
   String? publicId;
   bool isUploading = false;
 
-  var isToggoleSwitch = false;
+  late bool isPreview;
+  late TextEditingController titleController;
 
   final Dio dio = Dio();
+
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController(text: widget.videoTitle);
+    uploadedVideoUrl = widget.videoUrl;
+    isPreview = widget.isPreview;
+  }
 
   /// Pick video
   Future<void> pickVideo() async {
@@ -31,8 +54,23 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
     if (video != null) {
       setState(() {
         selectedVideo = File(video.path);
-        uploadedVideoUrl = null;
+        uploadedVideoUrl = "";
       });
+    }
+  }
+
+  Future<void> updateCourse() async {
+    if (selectedVideo == null && uploadedVideoUrl.isNotEmpty) {
+      context.read<UpdateLectureBloc>().add(
+        UpdatedLecture(
+          lectureId: widget.lectureId,
+          videoTitle: titleController.text,
+          isPreview: isPreview,
+          videoUrl: uploadedVideoUrl,
+        ),
+      );
+    } else {
+      await uploadVideo();
     }
   }
 
@@ -75,6 +113,15 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
         publicId = response.data["public_id"];
         isUploading = false;
       });
+
+      context.read<UpdateLectureBloc>().add(
+        UpdatedLecture(
+          lectureId: widget.lectureId,
+          videoTitle: titleController.text,
+          isPreview: isPreview,
+          videoUrl: uploadedVideoUrl,
+        ),
+      );
     } catch (e) {
       setState(() {
         isUploading = false;
@@ -88,70 +135,104 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Cloudinary Video Upload")),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ElevatedButton.icon(
-              onPressed: pickVideo,
-              icon: const Icon(Icons.video_library),
-              label: const Text("Pick Video"),
-            ),
-
-            const SizedBox(height: 16),
-
-            if (selectedVideo != null)
-              Text(
-                "Selected: ${selectedVideo!.path.split('/').last}",
-                style: const TextStyle(fontSize: 14),
-              ),
-
-            const SizedBox(height: 20),
-
-            //switch for video preview value
-            Row(
+      appBar: AppBar(title: const Text("Update Lecture")),
+      body: BlocConsumer<UpdateLectureBloc, UpdateLectureState>(
+        listener: (context, state) {
+          if (state is UpdateLectureLoading) {
+            eassyLoading();
+          } else {
+            EasyLoading.dismiss();
+          }
+          if (state is UpdateLectureFailure) {
+            Fluttertoast.showToast(msg: state.error);
+          } else if (state is UpdateLectureSuccess) {
+            Fluttertoast.showToast(msg: state.response.message);
+          }
+        },
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text("Video Preview"),
-                Gap(10.w),
-                Switch(
-                  value: isToggoleSwitch,
-                  onChanged: (value) {
-                    setState(() {
-                      isToggoleSwitch = value;
-                    });
-                  },
+                ElevatedButton.icon(
+                  onPressed: pickVideo,
+                  icon: const Icon(Icons.video_library),
+                  label: const Text("Pick Video"),
                 ),
+
+                const SizedBox(height: 16),
+
+                if (selectedVideo != null)
+                  Text(
+                    "Selected Video: ${selectedVideo!.path.split('/').last}",
+                    style: const TextStyle(fontSize: 14),
+                  ),
+
+                const SizedBox(height: 20),
+
+                Text("Video Title"),
+                Gap(5.h),
+                TextField(
+                  decoration: InputDecoration(
+                    filled: false,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: greyColor),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: greyColor),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  controller: titleController,
+                ),
+                Gap(10.h),
+
+                //switch for video preview value
+                Row(
+                  children: [
+                    Text("Video Preview"),
+                    Gap(10.w),
+                    Switch(
+                      value: isPreview,
+                      onChanged: (value) {
+                        setState(() {
+                          isPreview = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+
+                if (uploadedVideoUrl.isNotEmpty)
+                  SelectableText(
+                    "Uploaded URL:\n$uploadedVideoUrl",
+                    style: const TextStyle(color: Colors.green),
+                  ),
+                Gap(20.h),
+
+                //upload video in cloudinary
+                ElevatedButton(
+                  onPressed: isUploading ? null : updateCourse,
+                  child: const Text("Update Lecture"),
+                ),
+
+                const SizedBox(height: 20),
+
+                if (isUploading)
+                  Column(
+                    children: [
+                      LinearProgressIndicator(value: uploadProgress),
+                      const SizedBox(height: 8),
+                      Text("${(uploadProgress * 100).toStringAsFixed(0)}%"),
+                    ],
+                  ),
               ],
             ),
-
-            //upload video in cloudinary
-            ElevatedButton(
-              onPressed: isUploading ? null : uploadVideo,
-              child: const Text("Upload Video"),
-            ),
-
-            const SizedBox(height: 20),
-
-            if (isUploading)
-              Column(
-                children: [
-                  LinearProgressIndicator(value: uploadProgress),
-                  const SizedBox(height: 8),
-                  Text("${(uploadProgress * 100).toStringAsFixed(0)}%"),
-                ],
-              ),
-
-            const SizedBox(height: 20),
-
-            if (uploadedVideoUrl != null)
-              SelectableText(
-                "Uploaded URL:\n$uploadedVideoUrl",
-                style: const TextStyle(color: Colors.green),
-              ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

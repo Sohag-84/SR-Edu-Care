@@ -112,6 +112,9 @@ class AppPages {
         name: AppRoutes.videoUpload.name,
         builder: (context, state) => VideoUploadPage(
           lectureId: (state.extra as Map)["lectureId"].toString(),
+          videoTitle: (state.extra as Map)["videoTitle"].toString(),
+          isPreview: (state.extra as Map)["isPreview"] as bool,
+          videoUrl: (state.extra as Map)["videoUrl"].toString(),
         ),
       ),
     ],

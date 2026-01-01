@@ -30,7 +30,12 @@ Widget lectureSection({
             onTap: () {
               context.pushNamed(
                 AppRoutes.videoUpload.name,
-                extra: {"lectureId": lecture.id},
+                extra: {
+                  "lectureId": lecture.id,
+                  "videoTitle": lecture.title,
+                  "isPreview": lecture.isPreview,
+                  "videoUrl": lecture.videoUrl,
+                },
               );
             },
             child: Container(
