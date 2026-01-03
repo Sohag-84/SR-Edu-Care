@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sr_edu_care/core/constants/app_assets.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
 import 'package:sr_edu_care/core/utils/circular_indicator.dart';
 import 'package:sr_edu_care/core/utils/refresh_indicator.dart';
 import 'package:sr_edu_care/core/widgets/custom_course_card.dart';
 import 'package:sr_edu_care/feature/course/presentation/bloc/course/course_bloc.dart';
+import 'package:sr_edu_care/feature/home/presentation/bloc/slider_bloc.dart';
 import 'package:sr_edu_care/feature/home/presentation/widgets/home_slider.dart';
 import 'package:sr_edu_care/routes/app_routes.dart';
 import 'package:sr_edu_care/services/local_preference_service.dart';
@@ -22,6 +22,7 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     context.read<CourseBloc>().add(FetchCourses(page: 1, limit: 10));
+    context.read<SliderBloc>().add(FetchedSlider());
   }
 
   @override
@@ -50,7 +51,29 @@ class _HomeViewState extends State<HomeView> {
           padding: EdgeInsets.all(12.w),
           child: Column(
             children: [
-              homeSlider(imageList: [whiteLogo,logo]),
+              //slider
+              BlocBuilder<SliderBloc, SliderState>(
+                builder: (context, state) {
+                  if (state is SliderLoading) {
+                    return SizedBox(height: 300.h, child: loader());
+                  } else if (state is SliderFailure) {
+                    return SizedBox(
+                      height: 150.h,
+                      child: Center(child: Text(state.error)),
+                    );
+                  } else if (state is SliderLoaded) {
+                    return homeSlider(
+                      height: 100,
+                      imageList: state.sliders
+                          .map((slider) => slider.imageUrl)
+                          .toList(),
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                },
+              ),
+              //feture course list
               BlocBuilder<CourseBloc, CourseState>(
                 builder: (context, state) {
                   if (state is CourseLoading) {
@@ -79,12 +102,13 @@ class _HomeViewState extends State<HomeView> {
                         GridView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 8.h,
-                            crossAxisSpacing: 8.w,
-                            mainAxisExtent: 205.h,
-                          ),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 8.h,
+                                crossAxisSpacing: 8.w,
+                                mainAxisExtent: 205.h,
+                              ),
                           itemCount: state.courseWapper.courses.length,
                           itemBuilder: (BuildContext context, int index) {
                             final course = state.courseWapper.courses[index];
@@ -99,7 +123,8 @@ class _HomeViewState extends State<HomeView> {
                                   ? "https://cdn.ostad.app/course/photo/2025-12-08T14-25-01.527Z-Course-Thumbnail-12.jpg"
                                   : course.courseThumbnail.toString(),
                               title: course.courseTitle,
-                              lessonCount: "(${course.sections.length} Lessons)",
+                              lessonCount:
+                                  "(${course.sections.length} Lessons)",
                               courseDuration: "6h 55min",
                               level: course.courseLevel,
                               categroy: course.category,

@@ -8,6 +8,7 @@ class ApiEndpoints {
   static const String login = 'user/login';
   static const String register = 'user/register';
   static const String getPublishedCourses = 'course/publish-course/get';
+  static const String sliderList = "slider/sliders";
 
   // Protected APIs
   static String getCourseSections(String courseId) => 'section/$courseId/get';
@@ -15,5 +16,10 @@ class ApiEndpoints {
   static String updateLecture = "lecture/update";
 
   /// APIs that DON'T need token
-  static const List<String> publicApis = [login, register, getPublishedCourses];
+  static const List<String> publicApis = [
+    login,
+    register,
+    getPublishedCourses,
+    sliderList,
+  ];
 }

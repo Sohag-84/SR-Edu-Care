@@ -6,6 +6,7 @@ import 'package:sr_edu_care/feature/course/presentation/bloc/course/course_bloc.
 import 'package:sr_edu_care/feature/course/presentation/bloc/course_section/course_section_bloc.dart';
 import 'package:sr_edu_care/feature/course/presentation/bloc/instructor_course/instructor_course_bloc.dart';
 import 'package:sr_edu_care/feature/course/presentation/bloc/update_lecture/update_lecture_bloc.dart';
+import 'package:sr_edu_care/feature/home/presentation/bloc/slider_bloc.dart';
 import 'package:sr_edu_care/service_locator.dart';
 import 'package:sr_edu_care/services/local_preference_service.dart';
 import 'package:sr_edu_care/core/theme/app_theme.dart';
@@ -56,6 +57,9 @@ class MyApp extends StatelessWidget {
             BlocProvider(
               create: (context) =>
                   UpdateLectureBloc(updateLectureUsecase: sl.call()),
+            ),
+            BlocProvider(
+              create: (context) => SliderBloc(sliderUsecase: sl.call()),
             ),
           ],
           child: MaterialApp.router(

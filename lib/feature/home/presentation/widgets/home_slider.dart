@@ -5,9 +5,9 @@ import 'package:sr_edu_care/core/constants/export.dart';
 
 Widget homeSlider({
   required List imageList,
-  double height = 160,
+  double height = 180,
   int autoPlayInterval = 4,
-  BoxFit boxFit = BoxFit.none,
+  BoxFit boxFit = BoxFit.fill,
 }) {
   int activeIndex = 0;
 
@@ -35,11 +35,11 @@ Widget homeSlider({
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(5.r),
                     ),
                     child: AnyImageView(
                       imagePath: image,
-                      height: 50,
+                      height: 150.h,
                       fit: boxFit,
                       width: double.infinity,
                     ),
@@ -49,7 +49,7 @@ Widget homeSlider({
             }).toList(),
           ),
           Positioned(
-            bottom: 15,
+            bottom: 10,
             child: AnimatedSmoothIndicator(
               activeIndex: activeIndex,
               count: imageList.length,
