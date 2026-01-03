@@ -1,7 +1,7 @@
 import 'package:sr_edu_care/feature/course/domain/entities/course_entity.dart';
 
 class CourseWrapperEntity {
-  final bool success;
+  final bool status;
   final String message;
   final int totalCourses;
   final int currentPage;
@@ -9,7 +9,7 @@ class CourseWrapperEntity {
   final List<CourseEntity> courses;
 
   CourseWrapperEntity({
-    required this.success,
+    required this.status,
     required this.message,
     required this.totalCourses,
     required this.currentPage,

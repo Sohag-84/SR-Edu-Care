@@ -7,12 +7,12 @@ class CourseWrapperModel extends CourseWrapperEntity {
     required super.currentPage,
     required super.totalPages,
     required super.totalCourses,
-    required super.success,
+    required super.status,
     required super.message,
   });
   factory CourseWrapperModel.fromJson(Map<String, dynamic> json) {
     return CourseWrapperModel(
-      success: json['success'],
+      status: json['status'],
       message: json['message'],
       totalCourses: json['totalCourses'],
       currentPage: json['currentPage'],

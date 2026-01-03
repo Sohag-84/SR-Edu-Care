@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
+import 'package:sr_edu_care/core/utils/circular_indicator.dart';
 import 'package:sr_edu_care/core/widgets/custom_course_card.dart';
 import 'package:sr_edu_care/feature/course/presentation/bloc/instructor_course/instructor_course_bloc.dart';
 import 'package:sr_edu_care/routes/app_routes.dart';
@@ -44,10 +45,7 @@ class _InstructorCourseSectionState extends State<InstructorCourseSection> {
         BlocBuilder<InstructorCourseBloc, InstructorCourseState>(
           builder: (context, state) {
             if (state is InstructorCourseLoading) {
-              return SizedBox(
-                height: 200.h,
-                child: Center(child: CircularProgressIndicator()),
-              );
+              return SizedBox(height: 200.h, child: loader());
             } else if (state is InstructorCourseFailure) {
               return SizedBox(
                 height: 200.h,

@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
+import 'package:sr_edu_care/core/utils/circular_indicator.dart';
 import 'package:sr_edu_care/core/utils/refresh_indicator.dart';
 import 'package:sr_edu_care/core/widgets/custom_course_card.dart';
 import 'package:sr_edu_care/feature/course/presentation/bloc/course/course_bloc.dart';
@@ -48,7 +49,7 @@ class _HomeViewState extends State<HomeView> {
           child: BlocBuilder<CourseBloc, CourseState>(
             builder: (context, state) {
               if (state is CourseLoading) {
-                return Center(child: CircularProgressIndicator());
+                return SizedBox(height: 300.h, child: loader());
               } else if (state is CourseError) {
                 return SizedBox(
                   height:
