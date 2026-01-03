@@ -1,10 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sr_edu_care/core/constants/app_assets.dart';
 import 'package:sr_edu_care/core/constants/export.dart';
 import 'package:sr_edu_care/core/utils/circular_indicator.dart';
 import 'package:sr_edu_care/core/utils/refresh_indicator.dart';
 import 'package:sr_edu_care/core/widgets/custom_course_card.dart';
 import 'package:sr_edu_care/feature/course/presentation/bloc/course/course_bloc.dart';
+import 'package:sr_edu_care/feature/home/presentation/widgets/home_slider.dart';
 import 'package:sr_edu_care/routes/app_routes.dart';
 import 'package:sr_edu_care/services/local_preference_service.dart';
 
@@ -46,67 +48,72 @@ class _HomeViewState extends State<HomeView> {
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.all(12.w),
-          child: BlocBuilder<CourseBloc, CourseState>(
-            builder: (context, state) {
-              if (state is CourseLoading) {
-                return SizedBox(height: 300.h, child: loader());
-              } else if (state is CourseError) {
-                return SizedBox(
-                  height:
-                      MediaQuery.of(context).size.height -
-                      kTextTabBarHeight -
-                      100.h,
-                  child: Center(child: Text(state.message)),
-                );
-              } else if (state is CourseLoaded) {
-                return Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    Gap(10.h),
-                    Text(
-                      featureCourses,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Gap(10.h),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 8.h,
-                        crossAxisSpacing: 8.w,
-                        mainAxisExtent: 205.h,
-                      ),
-                      itemCount: state.courseWapper.courses.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final course = state.courseWapper.courses[index];
-                        return CustomCourseCard(
-                          onTap: () {
-                            context.pushNamed(
-                              AppRoutes.course.name,
-                              extra: {"courseId": course.id.toString()},
+          child: Column(
+            children: [
+              homeSlider(imageList: [whiteLogo,logo]),
+              BlocBuilder<CourseBloc, CourseState>(
+                builder: (context, state) {
+                  if (state is CourseLoading) {
+                    return SizedBox(height: 300.h, child: loader());
+                  } else if (state is CourseError) {
+                    return SizedBox(
+                      height:
+                          MediaQuery.of(context).size.height -
+                          kTextTabBarHeight -
+                          100.h,
+                      child: Center(child: Text(state.message)),
+                    );
+                  } else if (state is CourseLoaded) {
+                    return Column(
+                      crossAxisAlignment: .start,
+                      children: [
+                        Gap(10.h),
+                        Text(
+                          featureCourses,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Gap(10.h),
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 8.h,
+                            crossAxisSpacing: 8.w,
+                            mainAxisExtent: 205.h,
+                          ),
+                          itemCount: state.courseWapper.courses.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final course = state.courseWapper.courses[index];
+                            return CustomCourseCard(
+                              onTap: () {
+                                context.pushNamed(
+                                  AppRoutes.course.name,
+                                  extra: {"courseId": course.id.toString()},
+                                );
+                              },
+                              thumbnailImage: course.courseThumbnail == ""
+                                  ? "https://cdn.ostad.app/course/photo/2025-12-08T14-25-01.527Z-Course-Thumbnail-12.jpg"
+                                  : course.courseThumbnail.toString(),
+                              title: course.courseTitle,
+                              lessonCount: "(${course.sections.length} Lessons)",
+                              courseDuration: "6h 55min",
+                              level: course.courseLevel,
+                              categroy: course.category,
                             );
                           },
-                          thumbnailImage: course.courseThumbnail == ""
-                              ? "https://cdn.ostad.app/course/photo/2025-12-08T14-25-01.527Z-Course-Thumbnail-12.jpg"
-                              : course.courseThumbnail.toString(),
-                          title: course.courseTitle,
-                          lessonCount: "(${course.sections.length} Lessons)",
-                          courseDuration: "6h 55min",
-                          level: course.courseLevel,
-                          categroy: course.category,
-                        );
-                      },
-                    ),
-                  ],
-                );
-              } else {
-                return SizedBox();
-              }
-            },
+                        ),
+                      ],
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                },
+              ),
+            ],
           ),
         ),
       ),
